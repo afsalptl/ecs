@@ -1,3 +1,11 @@
+2^(2^n) boolean functions can be defined using 'n' binary variables.
+ex :-
+n=2
+2^2 = 4 AND terms can be defined - xy,xy',x'y,x'y'
+and ORing of these terms can be done either by selecting or discarding each terms
+hence 2 possiblities for each term. - 2*2*2*2 = 16 = 2^(2^2)
+
+
 15 Fundamental Gates are Implemented
 NOT
 AND
@@ -16,3 +24,7 @@ Similiarly 8x1 MUX can be implemented using 2 4x1 MUX and 1 2x1 MUX
 
 for passing an array, pass each induvidual elements as if if passing array sel[2] then do sel[0]=value, sel[1]=value
 or by sel[0..1] = value array
+
+The individual bits in a bus(array) are indexed 0...w-1, from right to left (i.e., index 0 refers to the least significant bit).
+
+internal pins can't be subscripted.

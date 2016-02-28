@@ -74,7 +74,7 @@ RAM8
 is built from 8 registers
 
 [!!!]in the case of read operation (load=0),the RAM's output immediately emits the value of the selected register.ie time-independent
-[!!!]in the case of write operation (load=1),the selected memory register commits to the input value in the next time unit,at which point the RAM's output will starts emitting it.
+[!!!]in the case of write operation (load=1),the selected memory register commits to the input value in the next time unit,at which 	point the RAM's output will starts emitting it.
 
 RAM64 	- 8*RAM8
 RAM512	- 8*RAM64

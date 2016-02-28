@@ -42,7 +42,7 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:000000
+   // Put you code here:
    Mux16(a=x,b=false,sel=zx,out=zdx);
    Not16(in=zdx,out=notx);
    Mux16(a=zdx,b=notx,sel=nx,out=ndx);

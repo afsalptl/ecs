@@ -11,14 +11,17 @@
 // Put your code here.
 
 (START)
-	@SCREEN 	//16384
+//initialize CurrentPos with SCREEN address(16384)
+	@SCREEN
 	D=A
 	@CurrentPos
-	M=D			//initialize with SCREEN address
+	M=D
 
-	//check if a key is pressed
+//check if a key is pressed
 	@KBD	
 	D=M
+
+//CurrentColor is set to corresponding color
 	@BLACK
 	D;JGT
 
@@ -36,13 +39,12 @@
 	@CurrentColor
 	D=M
 
-	@CurrentPos
+	@CurrentPos		//CurrentPos=CurrentColor
 	A=M
 	M=D
 
-	@CurrentPos
-	M=M+1
-	D=M
+	@CurrentPos		//CurrentPos=CurrentPos+1
+	MD=M+1
 
 	@KBD
 	D=D-A

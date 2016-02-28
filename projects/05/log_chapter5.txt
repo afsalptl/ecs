@@ -1,0 +1,79 @@
+Computer Architecture
+---------------------
+
+Stored program concept - computer is based on fixed set of hardware platform, capable of executing a fixed repertoire of instructions,at the same time ,these instructions can be combined to programs..the logic of these program is not embedded in the hardware,and stored in the computer memory just like data.(software)
+von neumann architecture - it is based on a CPU,interacting with a memory device ,receiving data from some input device and sending data to some output device.
+CPU consists ALU,set of Register and Control unit
+different type of registers are data register,adressing register,program counter register
+input and output - through memory maps.
+
+hack architecture
+-----------------
+instruction memory(ROM) - 32K (15bit addressing)
+data memory(RAM)
+
+CPU
+---
+D and A - CPU resident registers
+M refers to memory location addressed by A
+inM holds value at this location
+
+control logic
+1)instruction decoding - figures out what the instruction means(function of instruction)
+2)instruction execution- signal various parts of computer what they should do inorder to execute the instruction(function of instruction)
+3)Next instruction fetching - figures out which instructiont to execute next
+(function of instruction and the ALU output)
+
+*The outM and writeM outputs are combinational: they are affected instantaneously by the execution of the current instruction.
+The addressM and pc outputs are clocked
+
+ROM
+---
+out=ROM[address]
+ROM is preloaded with a machine language program
+
+SCREEN
+------
+256 rows * 512 pixels per row
+bit - 1=black , 0=white
+the pixel at row r(0<=r<=255) from the top and column c(0<=c<=511) from the left reflects the c%16 bit(counting from LSB to MSB) of the word found at Screen[r*32+c/16].
+
+Keyboard
+--------
+whenever a key is pressed on physical Keyboard,its 16 bit ASCII code appears at the memory map,else 0 apppears
+Writing at keyboard memory map is invalid
+
+Memory
+------
+0x0000-0x3FFF - RAM16K
+0x4000-0x5FFF - Screen 8K
+0x6000		  - KBD
+
+out(t) = Memory[address(t)](t)
+if load(t-1) then Memory[address(t-1)](t) = in(t-1)
+
+PC
+--
+if jump(t) then PC(t) = A(t-1)
+else PC(t) = PC(t-1)+1
+
+general purpose and dedicated computers
+gp - designed to easily switch from executing one program to another.
+dedicated - embedded in systems like cell phone,game console...
+
+Unlike Hack,most general purpose computers use single address space for storing both data and instruction. 
+and since instruction address and data address are specified by the single address input,(can't be done at the same time),so computer implementation is based on 2-cycle logic.
+1)Fetch cycle - where instruction address is fed into the address input of memory,causing it to immediatly emit the current instruction,which is then stored in instruction register.
+2)Execute cycle - instruction is decoded, and optional data address inferred from it is fed to the memory address input,allowing memory to manipulate the selected memory location.
+
+* Hack architecture partitions address space into two,allowing single-Cycle Fetch-Execute logic.
+its disadvantage is that,programs can't be changed dynamically.
+
+in most modern computers, CPU sends high level graphic instruction directly to graphics card to control the screen,
+
+CISC - Complex Instruction Set Computing - approach for achieving better performance by providing rich and elaborate instruction set
+RISC - Reduced Instruction Set Computing - approcah uses simpler instruction sets in order to promote faster hardware implementation as possible.
+
+Hack computer is neither CISC nor RISC , because Hack doesn't features neither a strong instruction set nor special hardware acceleration techniques.
+
+to start a program's execution, reset must be pushed "up" (1) and then "down" (0)
