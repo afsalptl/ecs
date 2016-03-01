@@ -1,0 +1,33 @@
+Assembler
+---------
+
+A text processing program that translates assembly(Symbolic) code to binary code translation
+
+Assembler tasks
+1) Parsing 			- parses assembly command into its underlying fields
+2) Code Generation 	- translates each field into its equivalent binary code
+3) Symbols Handling - replace all symbolic references (if any) with numeric addresses of memory locations
+4) Final Assembly 	- assembles the generated code into a complete binary instruction, 
+that can be executed by the hardware platform
+
+*the main difficulty is the symbol resolution task
+-solved by using symbol table
+
+Symbols - 2 types
+1)Variables - translator will assign memory	addresses for each variable symbols,actual value of this addresses are insignificant.
+eg :- LOAD R3,7 or LOAD R3,weight can be used interchangeably, if 'weight' refers to memory address 7.
+2)Lables - various locations in the program can be marked using symbols
+ex:if label 'loop' refers to beginning of some code segment , then goto loop commands can be usedd conditionally or unconditionally.
+
+Implementation
+--------------
+4 modules
+1)Parser - parses the fields in the given hack command
+2)Code - converts the field mnemonics into its binary equivalent code
+3)Symbol Table - deals with 3 types of symbols(predefined symbols,labels and variables)
+4)Assembler - Assembles the binary codes into single insstruction
+
+symbol table - 3 steps
+1)initialization - with predefined symbols
+2)First Pass - associate each labels with ROM address
+3)Second Pass - associate each variable with a RAM address starting from 16
