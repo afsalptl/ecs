@@ -73,10 +73,10 @@ Symbols
 -------
 1)Predefined Symbols - Special subset of RAM addresses
 	a)Virtual Registers - R0 to R15 are RAM addresses 0 to 15
-	b)Predefined pointers - SP,LCL,ARG,THIS,THAT ar 0 to 4
+	b)Predefined pointers - SP,LCL,ARG,THIS,THAT refers 0 to 4
 	b)IO pointers - SCREEN 16384,KBD 24576.
-2)Label Symbols - (Xxx) used to label destinations of goto commands,means that Xxx refers to the instruction memory location of the next command in the program.
-3)Variable Symbols - variable names
+2)Label Symbols - (Xxx) used to label destinations of goto commands,means that Xxx refers to the instruction memory location of the next command in the program.a label can be defined only once and can be used anywhere in the assembly program,even before the line in which it is defined.
+3)Variable Symbols - variable names are mapped to consecutive memory locations starting from RAM address 16.
 
 IO Handling
 -----------
@@ -87,4 +87,6 @@ KBD 24576
 
 Binary code files with .hack extension and assembly with .asm
 
-(Symbols) are pseudo commands since it doesn't generate any machine instructions.
+(Symbol) this pseudo command binds the 'Symbol' to the memory location into which the next command in the program will be stored
+
+(Symbol) are pseudo command since it doesn't generate any machine instructions.
