@@ -80,7 +80,6 @@ public class Parser
 		return jump;
 	}
 
-
 	private String removeComments(String in)
 	{
 		return in.replaceAll("//.*|(\\s)+","");

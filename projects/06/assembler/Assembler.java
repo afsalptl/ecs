@@ -15,43 +15,41 @@ public class Assembler
     		return;
     	}
 
-    	String infilename,outfilename,name;
-    	infilename = args[0];
+    	String inFileName = args[0], outFilePath = null;
 
-		if (!infilename.endsWith(".asm"))
+		if (!inFileName.endsWith(".asm"))
    		{
     		System.err.println("Invalid File Type\nUse .asm file containing hack assembly code");
-    		System.exit(-1);
+    		return;
     	}
 
-		File f = new File(infilename);
-		if(!f.exists())
+		File fileIn = new File(inFileName);
+		if(!fileIn.exists())
 		{
-			System.err.println(infilename + " : File Not Found");
-			System.exit(-1);
+			System.err.println(inFileName + " : File Not Found");
+			return;
 		}
 
-    	name = infilename.substring(0, infilename.lastIndexOf('.'));
-    	outfilename = name+".hack";
-
-		parser = new Parser(infilename);
+		parser = new Parser(inFileName);
 		code = new Code();
 		symboltable = new SymbolTable();
 
-    	File outfile = new File(outfilename);
+    	outFilePath = fileIn.getAbsolutePath().substring(0, fileIn.getAbsolutePath().lastIndexOf('.'))+".hack";
+    	File fileOut = new File(outFilePath);
+    	
     	FileWriter fw = null;
     	try {
-			fw = new FileWriter(outfile.getAbsoluteFile());
+			fw = new FileWriter(fileOut);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		bw = new BufferedWriter(fw);
 
 		firstPass();
-		parser = new Parser(infilename);	// re-initialize the file for reading
+		parser = new Parser(inFileName);	// re-initialize the file for reading
 		secondPass();
     	closeFile();
-    	System.out.println("Success : "+outfilename+" generated");
+    	System.out.println("Success : "+outFilePath+" generated");
     }
 
 	private static void firstPass()
