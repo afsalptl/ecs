@@ -197,7 +197,7 @@ class Ball {
 	    let factor = 10;
 	}
 	else {
-	    if (((~(lengthx < 0)) & (bouncingDirection = 1)) | ((lengthx < 0) & (bouncingDirection = (-1)))) {
+	    if ((~(lengthx < 0)) & (bouncingDirection = 1) | (lengthx < 0) & (bouncingDirection = (-1))) {
 	        let factor = 20; // bounce direction is in ball direction
    	    }
 	    else {
