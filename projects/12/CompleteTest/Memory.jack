@@ -1,0 +1,159 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Memory.jack
+
+/**
+ * Memory operations library.
+ */ 
+class Memory 
+{
+    static Array memory;
+    static Array freeList;
+
+    static int heapBase, heapBottom;
+    static int LENGTH, NEXT;
+
+    /** Initializes memory parameters. */
+    function void init()
+    {
+        let heapBase = 2048;
+        let heapBottom = 16383;
+
+        let memory = 0;
+        let freeList = heapBase;
+        let LENGTH = 0;
+        let NEXT = 1;
+        let freeList[LENGTH] = heapBottom - heapBase + 1;   //freeList.length
+        let freeList[NEXT] = null;                          //freeList.next
+        return;
+    }
+
+    /** Returns the value of the main memory at the given address. */
+    function int peek(int address) 
+    {
+        return memory[address];
+    }
+
+    /** Sets the value of the main memory at this address
+     *  to the given value. */
+    function void poke(int address, int value) 
+    {
+        let memory[address] = value;
+        return;
+    }
+
+    /** finds and allocates from the heap a memory block of the 
+     *  specified size and returns a reference to its base address. */
+    function int alloc(int size) 
+    {
+        var Array foundBlock, nextBlock, result;
+
+        let foundBlock = Memory.bestFit(size);
+        let result = foundBlock + 1;
+
+        if(~(foundBlock = null))
+        {
+            if(foundBlock[LENGTH] > (size + 3))
+            {
+                let nextBlock = foundBlock + size + 1;
+                let nextBlock[LENGTH] = foundBlock[LENGTH] - size - 1;
+                let nextBlock[NEXT] = foundBlock[NEXT];
+                let result[-1] = size + 1;
+                let freeList = nextBlock;
+            }
+            else
+            {
+                let nextBlock = foundBlock[NEXT];
+                let result[-1] = foundBlock[LENGTH];
+            }
+            let foundBlock = nextBlock;
+        }
+        return result;
+    }
+
+    /** De-allocates the given object and frees its space. */
+    function void deAlloc(int object) 
+    {
+        var Array preBlock, nextBlock;
+        var int size;
+
+        let size = object[-1];
+        let object = object - 1;
+        let preBlock = Memory.findPreFree(object);
+
+        if(preBlock = null)
+        {
+            let object[LENGTH] = size;
+            let object[NEXT] = freeList;
+            let freeList = object;
+        }
+        else
+        {
+            if((preBlock + preBlock[LENGTH]) = object)
+            {
+                let preBlock[LENGTH] = preBlock[LENGTH] + size;
+                let object = preBlock;
+            }
+            else
+            {
+                let object[LENGTH] = size;
+                let object[NEXT] = preBlock[NEXT];
+                let preBlock[NEXT] = object;
+            }
+        }
+
+        if((object + object[LENGTH]) = object[NEXT])
+        {
+            let nextBlock = object[NEXT];
+            let object[LENGTH] = object[LENGTH] + nextBlock[LENGTH];
+            let object[NEXT] = nextBlock[NEXT];
+        }
+        return;
+    }   
+
+    function Array bestFit(int size)
+    {
+        var Array curBlock, bestBlock;
+        var int curSize, bestSize;
+
+        let bestBlock = null;
+        let bestSize = heapBottom - heapBase + 1;
+        let curBlock = freeList;
+
+        if(curBlock[NEXT] = null)
+        {
+            return curBlock;
+        }
+
+        while(~(curBlock = null))
+        {
+            let curSize = curBlock[LENGTH] - 1;
+
+            if(~(curSize < size) & (curSize < bestSize))
+            {
+                let bestBlock = curBlock;
+                let bestSize = curSize;
+            }
+            let curBlock = curBlock[NEXT];
+        }
+        return bestBlock;
+    }
+
+    function Array findPreFree(int object)
+    {
+        var Array preBlock;
+
+        if(freeList > object)
+        {
+            return null;
+        }
+
+        let preBlock = freeList;
+        while(~(preBlock[NEXT] = null) & (preBlock[NEXT] < object))
+        {
+            let preBlock = preBlock[NEXT];
+        }
+        return preBlock;
+    }
+}
